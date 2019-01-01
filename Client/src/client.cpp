@@ -28,5 +28,10 @@ int main()
     c.sendMessage("/home/yorka/Documents/Productions/AddamsFamily/Music/12-Waiting.wav||20");
     boost::this_thread::sleep(boost::posix_time::seconds(5));
     c.sendMessage("time");
+    c.sendMessage("stop");
+    c.sendMessage("/home/yorka/Documents/Productions/AddamsFamily/Music/12-Waiting.wav||30");
+    boost::this_thread::sleep(boost::posix_time::seconds(5));
+    c.sendMessage("time");
+    c.sendMessage("stop");
     return 0;
 }

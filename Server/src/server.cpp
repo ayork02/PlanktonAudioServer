@@ -83,13 +83,19 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
             }
             audioInit = true;
         }
-        if(line == "time" && audioInit)
+        else if(line == "time" && audioInit)
         {
             std::cout << w->getTime() << std::endl;
-        };
-        if(line == "stop" && audioInit)
+        }
+        else if(line == "stop" && audioInit)
         {
-            audioInit = false; 
+            w->stop(); 
+            audioInit = false;
+            delete w;
+        }
+        else
+        {
+            std::cerr << "Invalid Message" << std::endl;
         }
         startRead();
     }
@@ -97,6 +103,10 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
     {
         std::cout << "Client Disconnected" << std::endl;
         socket.close();
+        if(audioInit)
+        {
+            delete w;
+        }
         deadline.expires_at(steady_timer::time_point::max());
         startAccept();
     }
