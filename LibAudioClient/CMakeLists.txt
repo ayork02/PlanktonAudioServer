@@ -1,10 +1,12 @@
 CMake_minimum_required(VERSION 3.5)
 
-project(AudioClient)
+project(audioclient)
 
-set(AudioClient_VERSION_MAJOR 0)
-set(AudioClient_VERSION_MINOR 9)
-set(AudioClient_VERSION_PATCH 0)
+include(GNUInstallDirs)
+
+set(audioclient_VERSION_MAJOR 0)
+set(audioclient_VERSION_MINOR 9)
+set(audioclient_VERSION_PATCH 0)
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED TRUE)
@@ -21,19 +23,26 @@ file(GLOB source_files "${source_dir}/*.cpp")
 
 find_package(Boost 1.68 REQUIRED COMPONENTS system thread)
 
-add_executable(AudioClient ${source_files})	
+add_library(audioclient SHARED ${source_files})
 
-target_include_directories(AudioClient
-	PUBLIC
+set_target_properties(audioclient PROPERTIES
+	PUBLIC_HEADER ${CMAKE_SOURCE_DIR}/include/audioclient.h
+)
+
+target_include_directories(audioclient
+	PRIVATE
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${Boost_INCLUDE_DIRS}
 )
 
-target_link_libraries(AudioClient
-	PUBLIC
+target_link_libraries(audioclient
+	PRIVATE
 		Boost::boost
         Boost::system
 		Boost::thread
 )
 
-target_compile_options(AudioClient PUBLIC -Werror)
+install(TARGETS audioclient
+	LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+	PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)

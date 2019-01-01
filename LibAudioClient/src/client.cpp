@@ -52,20 +52,3 @@ double Client::timecode()
         std::cerr << "Error Reading Timecode: " << boostErr.message() << std::endl;
     }
 }
-
-int main()
-{
-    Client c("10.0.0.18");
-    c.play("/home/yorka/Documents/Productions/AddamsFamily/Music/12-Waiting.wav", 20);
-    boost::this_thread::sleep(boost::posix_time::seconds(5));
-    std::cout << c.timecode() << std::endl;
-    boost::this_thread::sleep(boost::posix_time::seconds(5));
-    c.stop();
-    // c.timecode();
-    // c.sendMessage("stop");
-    // c.sendMessage("/home/yorka/Documents/Productions/AddamsFamily/Music/12-Waiting.wav||30");
-    // boost::this_thread::sleep(boost::posix_time::seconds(5));
-    // c.sendMessage("time");
-    // c.sendMessage("stop");
-    return 0;
-}
