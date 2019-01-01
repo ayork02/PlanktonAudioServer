@@ -25,7 +25,8 @@ void Client::sendMessage(const std::string msg)
 int main()
 {
     Client c("10.0.0.18");
-    c.sendMessage("Hello from Client");
-    boost::this_thread::sleep(boost::posix_time::seconds(10));
+    c.sendMessage("/home/yorka/Documents/Productions/AddamsFamily/Music/12-Waiting.wav||20");
+    boost::this_thread::sleep(boost::posix_time::seconds(5));
+    c.sendMessage("time");
     return 0;
 }

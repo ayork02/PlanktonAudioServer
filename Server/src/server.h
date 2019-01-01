@@ -1,7 +1,6 @@
 #pragma once
 
-#include "wave.h"
-
+#include <plankaudio.h>
 #include <boost/asio.hpp>
 #include <string>
 #include <iostream>
@@ -18,17 +17,22 @@ public:
     ~Server();
     void start();
     void stop();
+    
+
 private:
     bool stopped = false;
+    bool audioInit = false;
     tcp::socket socket;
     tcp::acceptor acceptor;
     std::error_code err;
     steady_timer deadline;
     std::string inputBuffer;
+    Wave* w;
 
     void startAccept();
     void handleAccept(const std::error_code &err);
     void startRead();
     void handleRead(const std::error_code& err, std::size_t n);
+    void writeMessage(std::string str);
     void checkDeadline();
 };

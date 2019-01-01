@@ -65,9 +65,31 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
     {
         std::string line(inputBuffer.substr(0, n-1));
         inputBuffer.erase(0, n);
-        if(!line.empty())
+        std::cout << "Received Message: " << line << std::endl;
+        if(line.find("/") != std::string::npos && !audioInit) //FIXME!!: Not cross platform
         {
-            std::cout << "Received: " << line << std::endl;
+            if(line.find("||") != std::string::npos)
+            {
+                size_t pos_end = line.find("||", 0);
+                std::string path = line.substr(0, pos_end);
+                w = new Wave(path.c_str());
+                std::string timeStart = line.substr(pos_end + 2, line.length());
+                w->play(static_cast<unsigned short>(std::stoul(timeStart, nullptr, 0)));
+            }
+            else
+            {
+                w = new Wave(line.c_str());
+                w->play();
+            }
+            audioInit = true;
+        }
+        if(line == "time" && audioInit)
+        {
+            std::cout << w->getTime() << std::endl;
+        };
+        if(line == "stop" && audioInit)
+        {
+            audioInit = false; 
         }
         startRead();
     }
@@ -83,7 +105,17 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
         std::cerr << "Error Receiving Message: " << err.message() << std::endl;
         stop();
     }
+}
 
+void Server::writeMessage(std::string str)
+{
+    boost::system::error_code boostErr;
+    boost::asio::write(socket, boost::asio::buffer(str), boostErr);
+    if(boostErr)
+    {
+        std::cerr << "Error Writing Message: " << boostErr.message() << std::endl;
+        stop();
+    }
 }
 
 void Server::checkDeadline()
