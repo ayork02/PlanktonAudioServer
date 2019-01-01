@@ -27,12 +27,13 @@ private:
     std::error_code err;
     steady_timer deadline;
     std::string inputBuffer;
+    boost::system::error_code boostErr;
     Wave* w;
 
     void startAccept();
-    void handleAccept(const std::error_code &err);
+    void handleAccept(const std::error_code& err);
     void startRead();
-    void handleRead(const std::error_code& err, std::size_t n);
+    void handleRead(const boost::system::error_code& boostErr, std::size_t n);
     void writeMessage(std::string str);
     void checkDeadline();
 };

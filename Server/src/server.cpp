@@ -55,13 +55,13 @@ void Server::startRead()
         std::bind(&Server::handleRead, this, std::placeholders::_1, std::placeholders::_2));
 }
 
-void Server::handleRead(const std::error_code& err, std::size_t n)
+void Server::handleRead(const boost::system::error_code& boostErr, std::size_t n)
 {
     if(stopped)
     {
         return;
     }
-    if(!err)
+    if(!boostErr)
     {
         std::string line(inputBuffer.substr(0, n-1));
         inputBuffer.erase(0, n);
@@ -98,7 +98,7 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
         }
         startRead();
     }
-    else if(err.value() == 2) //FIXME!!: Not cross platform
+    else if(boostErr == boost::asio::error::eof)
     {
         if(audioInit)
         {
@@ -112,7 +112,7 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
     }
     else
     {
-        std::cerr << "Error Receiving Message: " << err.message() << std::endl;
+        std::cerr << "Error Receiving Message: " << boostErr.message() << std::endl;
         stop();
     }
 }
@@ -120,7 +120,6 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
 void Server::writeMessage(std::string str)
 {
     str.append("\n");
-    boost::system::error_code boostErr;
     boost::asio::write(socket, boost::asio::buffer(str), boostErr);
     if(boostErr)
     {
