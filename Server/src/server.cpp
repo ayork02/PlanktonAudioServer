@@ -65,8 +65,7 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
     {
         std::string line(inputBuffer.substr(0, n-1));
         inputBuffer.erase(0, n);
-        std::cout << "Received Message: " << line << std::endl;
-        if(line.find("/") != std::string::npos && !audioInit) //FIXME!!: Not cross platform
+        if((line.find("/") != std::string::npos || line.find("\\") != std::string::npos) && !audioInit)
         {
             if(line.find("||") != std::string::npos)
             {
@@ -85,7 +84,7 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
         }
         else if(line == "time" && audioInit)
         {
-            std::cout << w->getTime() << std::endl;
+            writeMessage(std::to_string(w->getTime()));
         }
         else if(line == "stop" && audioInit)
         {
@@ -95,18 +94,19 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
         }
         else
         {
-            std::cerr << "Invalid Message" << std::endl;
+            std::cerr << "Invalid Command" << std::endl;
         }
         startRead();
     }
     else if(err.value() == 2) //FIXME!!: Not cross platform
     {
-        std::cout << "Client Disconnected" << std::endl;
-        socket.close();
         if(audioInit)
         {
+            w->stop();
             delete w;
         }
+        std::cout << "Client Disconnected" << std::endl;
+        socket.close();
         deadline.expires_at(steady_timer::time_point::max());
         startAccept();
     }
@@ -119,6 +119,7 @@ void Server::handleRead(const std::error_code& err, std::size_t n)
 
 void Server::writeMessage(std::string str)
 {
+    str.append("\n");
     boost::system::error_code boostErr;
     boost::asio::write(socket, boost::asio::buffer(str), boostErr);
     if(boostErr)

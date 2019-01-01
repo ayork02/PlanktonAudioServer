@@ -4,10 +4,10 @@ int main()
 {
     try
     {
-        boost::asio::io_context io_context;
-        Server s(io_context);
+        boost::asio::io_context ioContext;
+        Server s(ioContext);
         s.start();
-        io_context.run();
+        ioContext.run();
     }
     catch(std::exception& e)
     {
