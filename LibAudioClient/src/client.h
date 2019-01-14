@@ -23,5 +23,7 @@ public:
     
     void play(std::string filepath, unsigned short startPos = 0);
     void stop();
+    void pause();
+    void go();
     double timecode();
 };

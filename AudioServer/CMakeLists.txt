@@ -20,6 +20,7 @@ set(source_dir "${PROJECT_SOURCE_DIR}/src/")
 file(GLOB source_files "${source_dir}/*.cpp")
 
 find_package(PlankAudio REQUIRED)
+find_package(SndFile 1.0.28 REQUIRED)
 find_package(Boost 1.68 REQUIRED COMPONENTS thread system)
 
 add_executable(AudioServer ${source_files})	
@@ -29,11 +30,13 @@ target_include_directories(AudioServer
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${PLANKAUDIO_INCLUDE_DIRS}
 		${Boost_INCLUDE_DIRS}
+		${SNDFILE_INCLUDE_DIRS}
 )
 
 target_link_libraries(AudioServer
 	PUBLIC
 		${PLANKAUDIO_LIBRARIES}
+		${SNDFILE_LIBRARIES}
 		Boost::boost
         Boost::thread
         Boost::system

@@ -92,6 +92,14 @@ void Server::handleRead(const boost::system::error_code& boostErr, std::size_t n
             audioInit = false;
             delete w;
         }
+        else if(line == "pause" && audioInit)
+        {
+            w->pause();
+        }
+        else if(line == "go" && audioInit)
+        {
+            w->play();
+        }
         else
         {
             std::cerr << "Invalid Command" << std::endl;
@@ -103,6 +111,7 @@ void Server::handleRead(const boost::system::error_code& boostErr, std::size_t n
         if(audioInit)
         {
             w->stop();
+            audioInit = false;
             delete w;
         }
         std::cout << "Client Disconnected" << std::endl;

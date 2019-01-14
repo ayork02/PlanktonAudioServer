@@ -24,9 +24,6 @@ class Client:
 	def stop(self):
 		output = "stop\n"
 		self.s.send(output.encode())
-	def pause(self):
-		output = "pause\n"
-		self.s.send(output.encode())
 	def timecode(self):
 		output = "time\n"
 		self.s.send(output.encode())

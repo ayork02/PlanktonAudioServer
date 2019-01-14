@@ -37,6 +37,16 @@ void Client::stop()
     sendMessage("stop");
 }
 
+void Client::pause()
+{
+    sendMessage("pause");
+}
+
+void Client::go()
+{
+    sendMessage("go");
+}
+
 double Client::timecode()
 {
     sendMessage("time");
