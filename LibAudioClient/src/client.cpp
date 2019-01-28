@@ -42,9 +42,9 @@ void Client::pause()
     sendMessage("pause");
 }
 
-void Client::go()
+void Client::resume()
 {
-    sendMessage("go");
+    sendMessage("resume");
 }
 
 double Client::timecode()

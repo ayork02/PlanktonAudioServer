@@ -71,13 +71,13 @@ void Server::handleRead(const boost::system::error_code& boostErr, std::size_t n
             {
                 size_t pos_end = line.find("||", 0);
                 std::string path = line.substr(0, pos_end);
-                w = new Wave(path.c_str());
+                w = new PlanktonAudio::Wave(path.c_str());
                 std::string timeStart = line.substr(pos_end + 2, line.length());
                 w->play(static_cast<unsigned short>(std::stoul(timeStart, nullptr, 0)));
             }
             else
             {
-                w = new Wave(line.c_str());
+                w = new PlanktonAudio::Wave(line.c_str());
                 w->play();
             }
             audioInit = true;
@@ -96,7 +96,7 @@ void Server::handleRead(const boost::system::error_code& boostErr, std::size_t n
         {
             w->pause();
         }
-        else if(line == "go" && audioInit)
+        else if(line == "resume" && audioInit)
         {
             w->play();
         }

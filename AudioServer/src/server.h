@@ -28,7 +28,7 @@ private:
     steady_timer deadline;
     std::string inputBuffer;
     boost::system::error_code boostErr;
-    Wave* w;
+    PlanktonAudio::Wave* w;
 
     void startAccept();
     void handleAccept(const std::error_code& err);
