@@ -27,6 +27,9 @@ class Client:
 	def pause(self):
 		output = "pause\n"
 		self.s.send(output.encode())
+	def resume(self):
+		output = "resume\n"
+		self.s.send(output.encode())
 	def timecode(self):
 		output = "time\n"
 		self.s.send(output.encode())
