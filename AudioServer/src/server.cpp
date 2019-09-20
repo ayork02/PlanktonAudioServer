@@ -1,7 +1,7 @@
 #include "server.h"
 
-Server::Server(boost::asio::io_context& io_context)
-    : socket(io_context), acceptor(io_context, tcp::endpoint(tcp::v4(), 5005)), deadline(io_context)
+Server::Server(boost::asio::io_context& io_context, unsigned short port_num)
+    : socket(io_context), acceptor(io_context, tcp::endpoint(tcp::v4(), port_num)), deadline(io_context)
 {
     
 }

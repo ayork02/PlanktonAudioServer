@@ -13,7 +13,7 @@ using ip::tcp;
 class Server
 {
 public:
-    Server(boost::asio::io_context& io_context);
+    Server(boost::asio::io_context& io_context, unsigned short port_num);
     ~Server();
     void start();
     void stop();
